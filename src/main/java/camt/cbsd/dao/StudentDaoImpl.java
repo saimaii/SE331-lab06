@@ -1,40 +1,37 @@
-package camt.cbsd.services;
+package camt.cbsd.dao;
 
 import camt.cbsd.entity.Student;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Created by CAMT on 3/24/2017.
+ */
 @Profile("firstDataSource")
-@ConfigurationProperties(prefix = "server")
-@Service
-public class StudentServiceImpl implements StudentService {
+@ConfigurationProperties(prefix="server")
+@Repository
+
+public class StudentDaoImpl implements StudentDao {
+    List<Student> students;
     String baseUrl;
     String imageUrl;
-    String imageBaseUrl;
 
-    public void setBaseUrl(String baseUrl) {
+    public void setBaseUrl(String baseUrl){
         this.baseUrl = baseUrl;
     }
-
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(String imageUrl){
         this.imageUrl = imageUrl;
     }
-
+    String imageBaseUrl;
     @PostConstruct
-    protected void setImageBaseUrl() {
+    private void init(){
         imageBaseUrl = baseUrl + imageUrl;
-
-    }
-
-    public List<Student> getStudents() {
-        List<Student> students = new ArrayList<>();
-
+        students = new ArrayList<>();
         Student student = new Student(1, "SE-001", "Mitsuha", "Miyamizu",
                 2.15, imageBaseUrl+"mitsuha.gif", true, 0,
                 "The most beloved one");
@@ -47,6 +44,6 @@ public class StudentServiceImpl implements StudentService {
                 2.15, imageBaseUrl+"Kloop.gif", true, 2,
                 "The man for the Kop");
         students.add(student);
-        return students;
+    
     }
 }
